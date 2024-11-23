@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BE: Unit 1 Chapter 2</title>
+    <style>
+        /* Importing a modern font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #282c34;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content-container {
+            text-align: left;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .line {
+            font-size: 18px;
+            white-space: pre-wrap; /* Keep line breaks */
+        }
+
+        .cursor {
+            display: inline-block;
+            background: white;
+            width: 8px;
+            height: 18px;
+            margin-left: 2px;
+            animation: blink 0.6s infinite;
+        }
+
+        .link {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Blue color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            visibility: hidden; /* Hide link until animation ends */
+        }
+
+        .link.show {
+            visibility: visible; /* Show link after animation ends */
+            animation: fadeIn 1s forwards; /* Fade-in effect for link */
+        }
+
+        .skip-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #FF4136;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .skip-btn:hover {
+            background-color: #FF6347;
+        }
+
+        /* Navigation Map */
+        .nav-container {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container a {
+            color: #00f5ff;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+
+        .nav-container a:hover {
+            background-color: #006f8e;
+            color: #fff;
+        }
+
+        .nav-container .chapter-link {
+            background-color: #28a745; /* Green for Chapter 2 */
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 600px) {
+            .nav-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-container a {
+                display: inline-block;
+                width: 33%;
+                font-size: 1rem;
+            }
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Sidebar -->
+    <div class="nav-container">
+        <a href="backbencher.html">BE</a>
+        <a href="b_be.html" style="color: #00aaff;">Unit 1</a>
+        <a href="be_1_2.html" class="chapter-link">Chapter 2</a>
+    </div>
+
+    <!-- Content for Chapter 2 -->
+    <div class="content-container">
+        <button class="skip-btn" onclick="skipAnimation()">Skip</button>
+        <div id="typing-area" class="line"></div>
+        <div class="cursor"></div>
+
+        <!-- Link to the PDF file -->
+        <a id="pdfLink" href="Unit1_Chapter2_Notes.pdf" class="link" target="_blank">Unit1_Chapter2_Notes.pdf</a>
+    </div>
+
+    <script>
+        const lines = [
+            "BE_UNIT1_CHAPTER2\n",
+            ">> This chapter basically has:\n",
+            ">>  1. Transistor Current Gains (α and β)\n",
+            ">>  2. Common Emitter and Common Base Configuration of BJT\n",
+            ">>  3. DC Load Analysis\n",
+            ">>  4. Numericals on (α and β), collector current, and IB, IC, IE\n",
+            ">>  5. BJT as Switch\n",
+            ">>  6. CE-RC: Diagram, phase reversal concept, input/output waveforms\n",
+            ">>  7. MOSFET\n",
+            ">>  8. CMOS\n\n"
+        ];
+
+        let currentLine = 0;
+        let charIndex = 0;
+        const typingArea = document.getElementById("typing-area");
+        const pdfLink = document.getElementById("pdfLink");
+        let animationSkipped = false;
+
+        function typeLine() {
+            if (animationSkipped) return; // Stop typing animation if skipped
+
+            if (currentLine < lines.length) {
+                const line = lines[currentLine];
+                if (charIndex < line.length) {
+                    typingArea.textContent += line.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLine, 50); // Speed of typing (adjust as needed)
+                } else {
+                    currentLine++;
+                    charIndex = 0;
+                    setTimeout(typeLine, 500); // Small delay before the next line
+                }
+            } else {
+                // Show the link after typing finishes
+                pdfLink.classList.add("show");
+            }
+        }
+
+        function skipAnimation() {
+            animationSkipped = true;
+            // Show all lines instantly
+            typingArea.textContent = lines.join("");
+            // Show the PDF link
+            pdfLink.classList.add("show");
+            // Remove the cursor and skip button
+            document.querySelector(".cursor").style.display = "none";
+            document.querySelector(".skip-btn").style.display = "none";
+        }
+
+        // Start the typing animation
+        typeLine();
+    </script>
+</body>
+</html>

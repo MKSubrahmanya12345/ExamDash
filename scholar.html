@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar Page</title>
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .content {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: #2d7f5e;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .change-package-btn {
+            padding: 10px 20px;
+            background-color: #ff9900;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .change-package-btn:hover {
+            background-color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <h1>Welcome to the Scholar Package!</h1>
+        <p>This is the Scholar Package. Enjoy your learning experience!</p>
+
+        <button class="change-package-btn" onclick="changePackage()">Change Package</button>
+    </div>
+
+    <script>
+        // Check if the user is logged in
+        if (!localStorage.getItem('userPackage')) {
+            window.location.href = 'error.html';  // Redirect to error page if no package is found
+        }
+
+        function changePackage() {
+            localStorage.removeItem('userPackage');  // Remove the current package
+            window.location.href = 'chat.html';  // Redirect to chat.html to change the package
+        }
+    </script>
+
+</body>
+</html>

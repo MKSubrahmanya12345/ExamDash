@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        /* Modern Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('bg.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            overflow: hidden;
+        }
+
+        .welcome-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Prevent text overflow */
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            overflow: hidden;
+            border-right: 3px solid #fff; /* Cursor effect */
+            width: 0;
+            animation: typing 2s steps(30) 1s forwards, blink 0.75s step-end infinite; /* Fast typing animation */
+        }
+
+        /* Typing Animation */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Blinking cursor animation */
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        .user-details {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .redirect-button {
+            padding: 10px 20px;
+            background-color: #ff9900;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .redirect-button:hover {
+            background-color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container">
+        <h1>Welcome!</h1>
+        <p class="user-details" id="userDetails">Checking your choice...</p>
+        <button class="redirect-button" onclick="checkUserChoice()">Go to Dashboard</button>
+    </div>
+
+    <script>
+        function checkUserChoice() {
+            const userPackage = localStorage.getItem('userPackage');
+            if (userPackage === '1') {
+                setTimeout(() => {
+                    window.location.href = 'scholar.html';  // Redirect to Scholar Page
+                }, 2500);
+
+            } else if (userPackage === '2') {
+                setTimeout(() => {
+                    window.location.href = 'backbencher.html';  // Redirect to Scholar Page
+                }, 2500);;
+            } else {
+                window.location.href = 'chat.html';
+            }
+        }
+
+        window.onload = checkUserChoice;  // Automatically check on page load
+    </script>
+</body>
+</html>
+
+

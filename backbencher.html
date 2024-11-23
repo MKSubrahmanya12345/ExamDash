@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ff7e5f, #feb47b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .subjects {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+        }
+
+        .subject-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 220px;
+            text-align: center;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .subject-card:hover {
+            transform: scale(1.05);
+        }
+
+        .subject-card img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .subject-card h3 {
+            margin: 15px 0;
+            color: #555;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff6600, #ff9900);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .mark-done-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .mark-done-btn:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subjects {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .subject-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <div class="subjects">
+        <!-- Basic Electronics -->
+        <a href="b_be.html" class="subject-link">
+            <div class="subject-card" id="be-card">
+                <img src="be_icon.png" alt="BE">
+                <h3>Basic Electronics</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="be-progress"></div>
+                </div>
+                <div class="progress-text" id="be-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('be')">Mark as Done</button>
+            </div>
+        </a>
+
+        <!-- Physics -->
+        <a href="b_phys.html" class="subject-link">
+            <div class="subject-card" id="physics-card">
+                <img src="physics_icon.png" alt="Physics">
+                <h3>Physics</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="phys-progress"></div>
+                </div>
+                <div class="progress-text" id="phys-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('phys')">Mark as Done</button>
+            </div>
+        </a>
+
+        <!-- Maths -->
+        <a href="b_maths.html" class="subject-link">
+            <div class="subject-card" id="maths-card">
+                <img src="maths_icon.png" alt="Maths">
+                <h3>Maths</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="maths-progress"></div>
+                </div>
+                <div class="progress-text" id="maths-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('maths')">Mark as Done</button>
+            </div>
+        </a>
+
+        <!-- Foundations of Computer Science -->
+        <a href="b_fcs.html" class="subject-link">
+            <div class="subject-card" id="fcs-card">
+                <img src="fcs_icon.png" alt="FCS">
+                <h3>Foundations of CS</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="fcs-progress"></div>
+                </div>
+                <div class="progress-text" id="fcs-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('fcs')">Mark as Done</button>
+            </div>
+        </a>
+
+        <!-- PSP -->
+        <a href="b_psp.html" class="subject-link">
+            <div class="subject-card" id="psp-card">
+                <img src="psp_icon.png" alt="PSP">
+                <h3>Programming (PSP)</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="psp-progress"></div>
+                </div>
+                <div class="progress-text" id="psp-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('psp')">Mark as Done</button>
+            </div>
+        </a>
+
+        <!-- English -->
+        <a href="b_eng.html" class="subject-link">
+            <div class="subject-card" id="eng-card">
+                <img src="eng_icon.png" alt="English">
+                <h3>English</h3>
+                <div class="progress-container">
+                    <div class="progress-fill" id="eng-progress"></div>
+                </div>
+                <div class="progress-text" id="eng-progress-text">0%</div>
+                <button class="mark-done-btn" onclick="toggleProgress('eng')">Mark as Done</button>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        // Function to toggle progress for a subject
+        function toggleProgress(subject) {
+            let progress = parseInt(localStorage.getItem(subject + '_progress')) || 0;
+
+            if (progress === 0) {
+                progress = 100;
+                alert(subject + " marked as done!");
+            } else {
+                progress = 0;
+                alert(subject + " progress reset!");
+            }
+
+            // Save updated progress in localStorage
+            localStorage.setItem(subject + '_progress', progress);
+
+            // Update the UI
+            document.getElementById(subject + '-progress').style.width = `${progress}%`;
+            document.getElementById(subject + '-progress-text').textContent = `${progress}%`;
+        }
+
+        // Initialize progress on page load
+        window.onload = function () {
+            const subjects = ['be', 'phys', 'maths', 'fcs', 'psp', 'eng'];
+
+            subjects.forEach(subject => {
+                const progress = parseInt(localStorage.getItem(subject + '_progress')) || 0;
+                document.getElementById(subject + '-progress').style.width = `${progress}%`;
+                document.getElementById(subject + '-progress-text').textContent = `${progress}%`;
+            });
+        };
+    </script>
+</body>
+</html>

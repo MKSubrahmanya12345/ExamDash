@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        /* Center the chatbot container */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('bg.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            background: rgba(0, 0, 0, 0.897);
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: #222;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .chat-box p {
+            margin: 5px 0;
+        }
+
+        .chat-box .user-message {
+            color: #00ff00;
+            text-align: right;
+        }
+
+        .chat-box .bot-message {
+            color: #fff;
+            text-align: left;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background: #222;
+            color: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff9900;
+        }
+
+        .send-btn {
+            width: 15%;
+            padding: 10px;
+            margin-left: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background-color: #444;
+        }
+
+        /* Mobile responsiveness */
+        @media screen and (max-width: 600px) {
+            .chat-container {
+                padding: 20px;
+            }
+
+            input[type="text"] {
+                width: 70%;
+            }
+
+            .send-btn {
+                width: 25%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <p class="bot-message">Hello! Welcome to the Chatbot. Do you want the Scholar or Backbencher package?</p>
+        </div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type here..." onkeydown="checkEnter(event)">
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle the Enter key input
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Function to send the message
+        function sendMessage() {
+            const userInput = document.getElementById('userInput').value.trim();
+            if (userInput === '') return;
+
+            // Display user message
+            displayMessage(userInput, 'user');
+
+            // Clear input field
+            document.getElementById('userInput').value = '';
+
+            // Respond to user input
+            setTimeout(() => {
+                processInput(userInput);
+            }, 1000);
+        }
+
+        // Function to display message in chat box
+        function displayMessage(message, sender) {
+            const chatBox = document.getElementById('chatBox');
+            const newMessage = document.createElement('p');
+            newMessage.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            newMessage.textContent = message;
+            chatBox.appendChild(newMessage);
+
+            // Scroll to bottom of chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Fuzzy matching function (simple version)
+        function getFuzzyMatch(input, options) {
+            let bestMatch = '';
+            let highestScore = 0;
+
+            options.forEach(option => {
+                let score = 0;
+                for (let i = 0; i < Math.min(input.length, option.length); i++) {
+                    if (input[i].toLowerCase() === option[i].toLowerCase()) {
+                        score++;
+                    }
+                }
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = option;
+                }
+            });
+
+            return bestMatch;
+        }
+
+        // Function to process user input and respond
+        function processInput(input) {
+            let botResponse = '';
+            const options = ['scholar', 'backbencher'];
+
+            // Get the best match for the input using fuzzy matching
+            const matchedOption = getFuzzyMatch(input, options);
+
+            if (matchedOption === 'scholar') {
+                botResponse = "You selected the Scholar Package. Redirecting you...";
+                localStorage.setItem('userPackage', '1'); // Store 1 for scholar
+                setTimeout(() => {
+                    window.location.href = 'scholar.html';  // Redirect to Scholar Page
+                }, 1500);
+            } else if (matchedOption === 'backbencher') {
+                botResponse = "You selected the Backbencher Package. Redirecting you...";
+                localStorage.setItem('userPackage', '2'); // Store 2 for backbencher
+                setTimeout(() => {
+                    window.location.href = 'backbencher.html';  // Redirect to Backbencher Page
+                }, 1500);
+            } else {
+                botResponse = "Sorry, I didn't quite catch that. Please type 'Scholar' or 'Backbencher'.";
+            }
+
+            // Display bot response
+            displayMessage(botResponse, 'bot');
+        }
+    </script>
+
+</body>
+</html>
